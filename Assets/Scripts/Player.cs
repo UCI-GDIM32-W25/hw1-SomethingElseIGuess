@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
         _numSeedsPlanted = 0;
 
         _plantCountUI.UpdateSeeds(_numSeedsLeft, _numSeedsPlanted);
+
+        Debug.Log("Game Start!");
     }
 
     private void Update()
@@ -48,7 +50,7 @@ public class Player : MonoBehaviour
         _playerTransform.Translate(Vector2.right * _speed * Time.deltaTime);
         }
 
-        if (Input.GetKey(KeyCode.Space) && _numSeedsLeft < 0)
+        if(Input.GetKeyDown(KeyCode.Space) && _numSeedsLeft > 0)
         {
             PlantSeed();
         }
@@ -56,12 +58,24 @@ public class Player : MonoBehaviour
 
     public void PlantSeed ()
     {
-        Instantiate(_plantPrefab, _playerTransform.position, Quaternion.identity);
-
-        _numSeedsLeft--;
-
-        _numSeedsPlanted++;
-
-        _plantCountUI.UpdateSeeds(_numSeedsLeft, _numSeedsPlanted);
+        Debug.Log("Planting Seed!");
+        
+        if (_numSeedsLeft > 0)      
+        {
+            GameObject plant = Instantiate(_plantPrefab, _playerTransform.position, Quaternion.identity);
+            
+            Debug.Log("Plant position: " + _playerTransform.position);
+            
+            _numSeedsLeft--;
+             
+            _numSeedsPlanted++;
+            
+            _plantCountUI.UpdateSeeds(_numSeedsLeft, _numSeedsPlanted);
+            
+        }
+        else
+        {
+            Debug.Log("No seeds left to plant.");
+        }
     }
 }
